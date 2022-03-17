@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+     "module": "commonjs",
+     "target": "ES2019",
+     "lib": [
+        "es6",
+        "dom"
+     ],
+     "outDir": "dist",
+     "moduleResolution": "node",
+     "emitDecoratorMetadata": true,
+     "experimentalDecorators": true,
+     "sourceMap": true,
+     "declaration": false,
+     "allowJs": true,
+     "typeRoots": [
+        "node_modules/@types"
+     ],
+     "types": [
+        "node"
+     ]
+  },
+  "files": [
+     "src/index.ts"
+  ]
+}
