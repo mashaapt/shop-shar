@@ -11,11 +11,19 @@
       <input formControlName="subCategory" type="text" class="form-control">
     </div>
 
-    <button 
-      class="addnewcat-btn" 
-      [disabled]="newCategoryForm.invalid"
-      (click)="clickedAddCategory()">
-        Add
-      </button>
+    <button class="addcat-btn" [disabled]="newCategoryForm.invalid" (click)="clickedAddCategory()">
+      Add
+    </button>
+    
   </form>
+
+  <ul>
+    <li *ngFor="let category of categories ">
+      <label>Category: {{category.parent}}</label><br>
+      <label>Subcategory: {{category.child}}</label>
+      <button class="deletecat-btn" (click)="clickedDeleteCategory(category._id)">
+        Delete
+      </button>
+    </li>
+  </ul>
 </div>

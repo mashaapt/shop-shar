@@ -15,7 +15,7 @@ useContainer(Container);
 const app = express();
 const server = http.createServer(app);
 
-connect('mongodb://localhost/bookAPI');
+connect('mongodb://localhost/shop-shar');
 
 // app.use(morgan('dev'));
 app.use(express.urlencoded({

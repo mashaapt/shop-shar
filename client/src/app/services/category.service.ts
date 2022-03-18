@@ -17,8 +17,13 @@ export class CategoryService {
     return lastValueFrom(request);
   }
 
-  gellAllCategories() {
-    const request = this.http.get('api/categories');
+  getAllCategories() {
+    const request = this.http.get<Category[]>('api/categories');
+    return lastValueFrom(request);
+  }
+
+  deleteCategory(id: string) {
+    const request = this.http.delete<Category>(`api/categories/${id}`);
     return lastValueFrom(request);
   }
   

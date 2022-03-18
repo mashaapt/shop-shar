@@ -14,8 +14,12 @@ export class CategoriesController {
   }
 
   @Get()
-  getAllCategories() {
-    return CategoryModel.find({}).exec();
+  async getAllCategories() {
+    const result = await CategoryModel.find().exec();
+
+    console.log(result);
+
+    return result;
   }
 
   @Post()

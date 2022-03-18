@@ -10,17 +10,23 @@ import { Category } from '../../../../../common/models/category';
 })
 export class AdminComponent implements OnInit {
   newCategoryForm: FormGroup;
+  categories: Category[];
 
   constructor(
     private categoryService: CategoryService,
     private formBuilder: FormBuilder) {
 
     this.initForm();
-   }
+    this.loadCategories();
+  }
 
-  ngOnInit(): void {
-    
+  async ngOnInit() {
 
+
+  }
+
+  private async loadCategories() {
+    this.categories = await this.categoryService.getAllCategories();
   }
 
   private initForm() {
@@ -30,14 +36,19 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  clickedAddCategory() {
+  async clickedAddCategory() {
     const category: Category = {
       parent: this.newCategoryForm.value.category,
       child: this.newCategoryForm.value.subCategory
     }
 
-    this.categoryService.addCategory(category);
-    this.categoryService.gellAllCategories();
+    await this.categoryService.addCategory(category);
+    this.loadCategories();
   }
 
+   async clickedDeleteCategory(id: string) {
+    await this.categoryService.deleteCategory(id);
+    this.loadCategories();
+   }
+  
 }
