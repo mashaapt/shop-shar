@@ -1,0 +1,21 @@
+<div>
+  <h2>Create new category</h2>
+  <form [formGroup]="newCategoryForm">
+    <div class="cat">
+      <label>New Category</label>
+      <input formControlName="category" type="text" class="form-control">
+    </div>
+
+    <div class="sub-cat">
+      <label>New Subcategory</label>
+      <input formControlName="subCategory" type="text" class="form-control">
+    </div>
+
+    <button 
+      class="addnewcat-btn" 
+      [disabled]="newCategoryForm.invalid"
+      (click)="clickedAddCategory()">
+        Add
+      </button>
+  </form>
+</div>

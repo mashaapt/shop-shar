@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Product, ProductModel } from '../models/product';
-import { Body, Get, JsonController, Param, Params, Post, QueryParam, Req, UseAfter, UseBefore, UseInterceptor } from 'routing-controllers';
+import { Body, Get, JsonController, Param, Post, UseInterceptor } from 'routing-controllers';
 import { MongoInterceptor } from '../middleware/mongoose-middleware';
 
 @JsonController('/api/products')

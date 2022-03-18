@@ -5,6 +5,7 @@ import * as morgan from 'morgan';
 import 'reflect-metadata';
 import { useContainer, useExpressServer } from 'routing-controllers';
 import { Container } from 'typedi';
+import './controllers/categories.controller';
 import './controllers/products.controller';
 
 declare const process: any;
@@ -23,6 +24,6 @@ app.use(express.urlencoded({
 
 useExpressServer(app);
 
-const port = process.env.PORT || 3003; 
+const port = process.env.PORT || 3030; 
 server.listen(port, () => console.log(`Http Server started on ${port}`));
 
