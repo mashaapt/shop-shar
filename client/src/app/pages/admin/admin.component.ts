@@ -44,6 +44,8 @@ export class AdminComponent implements OnInit {
 
     await this.categoryService.addCategory(category);
     this.loadCategories();
+
+    this.newCategoryForm.controls.category.setValue('');
   }
 
    async clickedDeleteCategory(id: string) {
