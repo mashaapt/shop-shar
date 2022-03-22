@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { Category } from '../../../common/models/category';
+import { Category } from '../../../common/interfaces/category.interface';
 
 // const cat: Category = {
 //   parent: 'Латексные шары',
@@ -16,5 +16,5 @@ const categorySchema = new Schema<Category>({
   child: { type: String, required: true }  
 });
 
-export const CategoryModel = model<Category>('Category', categorySchema);
+export const MongoCategory = model<Category>('Category', categorySchema);
 

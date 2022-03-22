@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/services/category.service';
-import { Category } from '../../../../../common/models/category';
+import { Category } from '../../../../../common/interfaces/category.interface';
 
 @Component({
   selector: 'app-admin',

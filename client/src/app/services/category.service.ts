@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { Category } from '../../../../common/models/category';
+import { Category } from '../../../../common/interfaces/category.interface';
 import { lastValueFrom } from "rxjs";
 @Injectable({
   providedIn: 'root'
