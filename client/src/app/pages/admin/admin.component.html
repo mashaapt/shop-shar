@@ -1,20 +1,20 @@
-<div>
-  <h2>Create new category</h2>
+<div class="category">
+  <h2>Создать новую категорию</h2>
   <form [formGroup]="newCategoryForm">
     <div class="cat">
-      <label>New Category</label>
+      <label>Категория</label>
       <input formControlName="category" type="text" class="form-control">
     </div>
 
     <div class="sub-cat">
-      <label>New Subcategory</label>
+      <label>Подкатегория</label>
       <input formControlName="subCategory" type="text" class="form-control">
     </div>
 
     <button class="addcat-btn" [disabled]="newCategoryForm.invalid" (click)="clickedAddCategory()">
-      Add
+      Добавить
     </button>
-    
+
   </form>
 
   <ul>
@@ -22,7 +22,80 @@
       <label>Category: {{category.parent}}</label><br>
       <label>Subcategory: {{category.child}}</label>
       <button class="deletecat-btn" (click)="clickedDeleteCategory(category._id)">
-        Delete
+        Удалить
+      </button>
+    </li>
+  </ul>
+</div>
+
+<div class="product">
+  <h2>Создать новый продукт</h2>
+  <form [formGroup]="newProductForm">
+    <div>
+      <label>Название</label>
+      <input formControlName="title" type="text" class="form-control">
+    </div>
+
+    <div>
+      <label>Описание</label>
+      <textarea formControlName="description" type="text" class="form-control">
+      </textarea>
+    </div>
+
+    <div>
+      <label>Код</label>
+      <input formControlName="code" type="text" class="form-control">
+    </div>
+
+    <div>
+      <label>Цена</label>
+      <input formControlName="price" type="text" class="form-control">
+    </div>
+
+    <div>
+      <label>Количество в упаковке</label>
+      <input formControlName="pieces" type="text" class="form-control">
+    </div>
+
+    <div>
+      <label>Размер</label>
+      <input formControlName="sizeCm" type="text" class="form-control">
+    </div>
+
+    <div>
+      <label>Ширина</label>
+      <input formControlName="widthCm" type="text" class="form-control">
+    </div>
+
+    <div>
+      <label>Высота</label>
+      <input formControlName="heightCm" type="text" class="form-control">
+    </div>
+
+    <div>
+      <label>Остаток</label>
+      <input formControlName="quantity" type="text" class="form-control">
+    </div>
+
+    <button class="addprod-btn" [disabled]="newProductForm.invalid" (click)="clickedAddProduct()">
+      Добавить
+    </button>
+  </form>
+
+  <ul>
+    <li *ngFor="let product of products ">
+      <label>Название: {{product.title}}</label><br>
+      <label>Описание: {{product.description}}</label><br>
+      <label>Код: {{product.code}}</label><br>
+      <label>Цена: {{product.price}}</label><br>
+      <label>Количество в упаковке: {{product.pieces}}</label><br>
+      <label>Размер: {{product.sizeCm}}</label><br>
+      <label>Ширина: {{product.widthCm}}</label><br>
+      <label>Высота: {{product.heightCm}}</label><br>
+      <label>Остаток: {{product.quantity}}</label><br>
+
+      <button class="deleteprod-btn" (click)="clickedDeleteProduct(product._id)">
+        Удалить
       </button>
     </li>
   </ul>

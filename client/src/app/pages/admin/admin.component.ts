@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/services/category.service';
+import { ProductService } from 'src/app/services/product.service';
 import { Category } from '../../../../../common/interfaces/category.interface';
+import { Product } from '../../../../../common/interfaces/product.interface';
 
 @Component({
   selector: 'app-admin',
@@ -11,13 +13,17 @@ import { Category } from '../../../../../common/interfaces/category.interface';
 export class AdminComponent implements OnInit {
   newCategoryForm: FormGroup;
   categories: Category[];
+  newProductForm: FormGroup;
+  products: Product[];
 
   constructor(
     private categoryService: CategoryService,
+    private productService: ProductService,
     private formBuilder: FormBuilder) {
 
     this.initForm();
     this.loadCategories();
+    this.loadProducts();
   }
 
   async ngOnInit() {
@@ -29,10 +35,26 @@ export class AdminComponent implements OnInit {
     this.categories = await this.categoryService.getAllCategories();
   }
 
+  private async loadProducts() {
+    this.products = await this.productService.getAllProducts();
+  }
+
   private initForm() {
     this.newCategoryForm = this.formBuilder.group({
       category: ['', [Validators.required]],
       subCategory: ['', [Validators.required]]
+    });
+
+    this.newProductForm = this.formBuilder.group({
+      title: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      code: ['', [Validators.required]],
+      price: ['', [Validators.required]],
+      pieces: [1, [Validators.required]],
+      sizeCm: ['', []],
+      widthCm: ['', []],
+      heightCm: ['', []],
+      quantity: ['', [Validators.required]]
     });
   }
 
@@ -40,17 +62,41 @@ export class AdminComponent implements OnInit {
     const category: Category = {
       parent: this.newCategoryForm.value.category,
       child: this.newCategoryForm.value.subCategory
-    }
+    };
 
     await this.categoryService.addCategory(category);
     this.loadCategories();
 
-    this.newCategoryForm.controls.category.setValue('');
+    this.newCategoryForm.reset();
   }
 
-   async clickedDeleteCategory(id: string) {
+  async clickedDeleteCategory(id: string) {
     await this.categoryService.deleteCategory(id);
     this.loadCategories();
-   }
-  
+  }
+
+  async clickedAddProduct() {
+    const product: Partial<Product> = {
+      title: this.newProductForm.value.title,
+      description: this.newProductForm.value.description,
+      code: this.newProductForm.value.code,
+      price: this.newProductForm.value.price,
+      pieces: this.newProductForm.value.pieces,
+      sizeCm: this.newProductForm.value.sizeCm,
+      widthCm: this.newProductForm.value.widthCm,
+      heightCm: this.newProductForm.value.heightCm,
+      quantity: this.newProductForm.value.quantity
+    };
+
+    await this.productService.addProduct(product as Product);
+    this.loadProducts();
+
+    this.newProductForm.reset();
+  }
+
+  async clickedDeleteProduct(id: string) {
+    await this.productService.deleteProduct(id);
+    this.loadProducts();
+  }
+
 }

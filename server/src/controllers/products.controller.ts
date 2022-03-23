@@ -1,7 +1,8 @@
 import 'reflect-metadata';
-import { Product, ProductModel } from '../models/product';
-import { Body, Get, JsonController, Param, Post, UseInterceptor } from 'routing-controllers';
+import { MongoProduct } from '../mongo-models/product';
+import { Body, Delete, Get, JsonController, Param, Post, UseInterceptor } from 'routing-controllers';
 import { MongoInterceptor } from '../middleware/mongoose-middleware';
+import { Product } from '../../../common/interfaces/product.interface';
 
 @JsonController('/api/products')
 @UseInterceptor(MongoInterceptor)
@@ -9,22 +10,34 @@ export class ProductsController {
 
     @Get('/:productId')
     getProduct(@Param('productId') productId: string) {
-        return ProductModel.findById(productId).exec();
+        return MongoProduct.findById(productId).exec();
     }
-    
-    @Get()
-    getAllProducts() {
 
+    @Get()
+    async getAllProducts() {
+        const result = await MongoProduct.find().exec();
+
+        return result;
     }
 
     @Post()
     addProduct(@Body() product: Product) {
 
-        const productModel = new ProductModel<Product>(product);
+        const productModel = new MongoProduct<Product>(product);
 
-        console.log('adding product: ', product)
+        // console.log('adding product: ', product)
 
         return true;
+    }
+
+    @Delete('/:productId')
+    async deleteProduct(@Param('productId') productId: string) {
+        const product = await this.getProduct(productId);
+
+        if (product) {
+            await product.delete();
+            return true;
+        }
     }
 
 }

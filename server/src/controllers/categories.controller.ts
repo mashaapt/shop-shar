@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { MongoCategory } from '../models/category';
+import { MongoCategory } from '../mongo-models/category';
 import { Body, Delete, Get, JsonController, Param, Post, UseInterceptor } from 'routing-controllers';
 import { MongoInterceptor } from '../middleware/mongoose-middleware';
 import { Category } from '../../../common/interfaces/category.interface'
