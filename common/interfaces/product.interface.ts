@@ -19,6 +19,5 @@ export interface Product {
     color: string;
     maker: string;
     type: Type;
-    quantity: number;
-
+    soldOut: boolean;
 }

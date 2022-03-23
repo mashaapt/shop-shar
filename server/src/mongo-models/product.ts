@@ -8,14 +8,14 @@ const productSchema = new Schema<Product>({
   category: { type: Object, required: true } ,
   price: { type: Number, required: true },
   pieces: { type: Number, required: true },
-  sizeCm: { type: Number, required: true },
-  widthCm: { type: Number, required: true },
-  heightCm: { type: Number, required: true },
-  shape: { type: String, required: true },
-  color: { type: String, required: true },
-  maker: { type: String, required: true },
-  type: { type: String, required: true },
-  quantity: { type: Number, required: true }
+  sizeCm: { type: Number, required: false },
+  widthCm: { type: Number, required: false },
+  heightCm: { type: Number, required: false },
+  shape: { type: String, required: false },
+  color: { type: String, required: false },
+  maker: { type: String, required: false },
+  type: { type: String, required: false },
+  soldOut: { type: Boolean, required: true }
 });
 
 export const MongoProduct = model<Product>('Product', productSchema);

@@ -54,7 +54,7 @@ export class AdminComponent implements OnInit {
       sizeCm: ['', []],
       widthCm: ['', []],
       heightCm: ['', []],
-      quantity: ['', [Validators.required]]
+      soldOut: ['', [Validators.required]]
     });
   }
 
@@ -85,7 +85,7 @@ export class AdminComponent implements OnInit {
       sizeCm: this.newProductForm.value.sizeCm,
       widthCm: this.newProductForm.value.widthCm,
       heightCm: this.newProductForm.value.heightCm,
-      quantity: this.newProductForm.value.quantity
+      soldOut: this.newProductForm.value.soldOut,
     };
 
     await this.productService.addProduct(product as Product);

@@ -21,13 +21,14 @@ export class ProductsController {
     }
 
     @Post()
-    addProduct(@Body() product: Product) {
+    async addProduct(@Body() product: Product) {
 
         const productModel = new MongoProduct<Product>(product);
-
+        const result = await productModel.save();
         // console.log('adding product: ', product)
 
-        return true;
+        return result._id.toString();
+
     }
 
     @Delete('/:productId')
