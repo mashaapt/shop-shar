@@ -15,6 +15,8 @@ export class AdminComponent implements OnInit {
   categories: Category[];
   newProductForm: FormGroup;
   products: Product[];
+  categoryDisplayedColumns = ['parent', 'child', 'actions'];
+  productDisplayedColumns = ['title', 'description', 'code', 'price', 'pieces', 'sizeCm', 'widthCm', 'heightCm', 'soldOut'];
 
   constructor(
     private categoryService: CategoryService,
