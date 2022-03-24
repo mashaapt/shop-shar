@@ -18,6 +18,11 @@ export class AdminComponent implements OnInit {
   categoryDisplayedColumns = ['parent', 'child', 'actions'];
   productDisplayedColumns = ['title', 'description', 'code', 'price', 'pieces', 'sizeCm', 'widthCm', 'heightCm', 'soldOut'];
 
+
+  categoryOptions = [];
+  subcategoryOptions = [];
+
+
   constructor(
     private categoryService: CategoryService,
     private productService: ProductService,
@@ -35,6 +40,10 @@ export class AdminComponent implements OnInit {
 
   private async loadCategories() {
     this.categories = await this.categoryService.getAllCategories();
+
+    this.categoryOptions = ['Cat 1', 'Cat 2', 'Cat 3']
+    this.subcategoryOptions = ['Subcat 1', 'Subcat 2', 'Subcat 3'];
+
   }
 
   private async loadProducts() {
@@ -56,6 +65,8 @@ export class AdminComponent implements OnInit {
       sizeCm: ['', []],
       widthCm: ['', []],
       heightCm: ['', []],
+      category: ['', [Validators.required]],
+      subCategory: ['', [Validators.required]],
       soldOut: ['', [Validators.required]]
     });
   }

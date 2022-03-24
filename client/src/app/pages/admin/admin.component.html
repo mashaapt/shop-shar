@@ -95,6 +95,24 @@
           <input matInput formControlName="heightCm" type="text" class="form-control">
         </mat-form-field>
 
+        <mat-form-field appearance="fill">
+          <mat-label>Категория</mat-label>
+          <mat-select formControlName="category">
+            <mat-option *ngFor="let category of categoryOptions" [value]="category">
+              {{category}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Подкатегория</mat-label>
+          <mat-select formControlName="subCategory">
+            <mat-option *ngFor="let subCategory of subcategoryOptions" [value]="subCategory">
+              {{subCategory}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
         <mat-checkbox formControlName="soldOut" class="form-control">
           Распродано
         </mat-checkbox>
