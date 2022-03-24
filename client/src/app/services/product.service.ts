@@ -23,7 +23,7 @@ export class ProductService {
   }
 
   deleteProduct(id: string) {
-    const request = this.http.delete<Product>('api/products');
+    const request = this.http.delete<Product>(`api/products/${id}`);
     return lastValueFrom(request);
   }
 }

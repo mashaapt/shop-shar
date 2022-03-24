@@ -4,6 +4,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 import { Category } from '../../../../../common/interfaces/category.interface';
 import { Product } from '../../../../../common/interfaces/product.interface';
+import { uniq } from 'lodash';
 
 @Component({
   selector: 'app-admin',
@@ -16,7 +17,7 @@ export class AdminComponent implements OnInit {
   newProductForm: FormGroup;
   products: Product[];
   categoryDisplayedColumns = ['parent', 'child', 'actions'];
-  productDisplayedColumns = ['title', 'description', 'code', 'price', 'pieces', 'sizeCm', 'widthCm', 'heightCm', 'soldOut'];
+  productDisplayedColumns = ['title', 'description', 'code', 'price', 'pieces', 'sizeCm', 'widthCm', 'heightCm', 'category', 'subCategory', 'soldOut', 'actions'];
 
 
   categoryOptions = [];
@@ -40,10 +41,8 @@ export class AdminComponent implements OnInit {
 
   private async loadCategories() {
     this.categories = await this.categoryService.getAllCategories();
-
-    this.categoryOptions = ['Cat 1', 'Cat 2', 'Cat 3']
-    this.subcategoryOptions = ['Subcat 1', 'Subcat 2', 'Subcat 3'];
-
+    this.categoryOptions = uniq(this.categories.map(category => category.parent.trim()));
+    this.subcategoryOptions = uniq(this.categories.map(category => category.child.trim()));
   }
 
   private async loadProducts() {
@@ -67,7 +66,7 @@ export class AdminComponent implements OnInit {
       heightCm: ['', []],
       category: ['', [Validators.required]],
       subCategory: ['', [Validators.required]],
-      soldOut: ['', [Validators.required]]
+      soldOut: [false, []]
     });
   }
 
@@ -98,7 +97,11 @@ export class AdminComponent implements OnInit {
       sizeCm: this.newProductForm.value.sizeCm,
       widthCm: this.newProductForm.value.widthCm,
       heightCm: this.newProductForm.value.heightCm,
-      soldOut: this.newProductForm.value.soldOut,
+      category: {
+        parent: this.newProductForm.value.category,
+        child: this.newProductForm.value.subCategory
+      },
+      soldOut: this.newProductForm.value.soldOut
     };
 
     await this.productService.addProduct(product as Product);

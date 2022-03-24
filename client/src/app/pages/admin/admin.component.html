@@ -57,42 +57,42 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Название</mat-label>
-          <input matInput formControlName="title" type="text" class="form-control">
+          <input matInput formControlName="title" name="title" type="text" class="form-control">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Описание</mat-label>
-          <input matInput formControlName="description" type="text" class="form-control">
+          <input matInput formControlName="description" name="description" type="text" class="form-control">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Код</mat-label>
-          <input matInput formControlName="code" type="text" class="form-control">
+          <input matInput formControlName="code" name="code" type="text" class="form-control">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Цена</mat-label>
-          <input matInput formControlName="price" type="text" class="form-control">
+          <input matInput formControlName="price" name="price" type="text" class="form-control">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Количество в упаковке</mat-label>
-          <input matInput formControlName="pieces" type="text" class="form-control">
+          <input matInput formControlName="pieces" name="pieces" type="text" class="form-control">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Размер</mat-label>
-          <input matInput formControlName="sizeCm" type="text" class="form-control">
+          <input matInput formControlName="sizeCm" name="sizeCm" type="text" class="form-control">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Ширина</mat-label>
-          <input matInput formControlName="widthCm" type="text" class="form-control">
+          <input matInput formControlName="widthCm" name="widthCm" type="text" class="form-control">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Высота</mat-label>
-          <input matInput formControlName="heightCm" type="text" class="form-control">
+          <input matInput formControlName="heightCm" name="heightCm" type="text" class="form-control">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -153,22 +153,32 @@
 
       <ng-container matColumnDef="sizeCm">
         <th mat-header-cell *matHeaderCellDef> Размер </th>
-        <td mat-cell *matCellDef="let product"> {{product.sizeCm}} </td>
+        <td mat-cell *matCellDef="let product"> {{product.sizeCm ?? '-'}} </td>
       </ng-container>
 
       <ng-container matColumnDef="widthCm">
         <th mat-header-cell *matHeaderCellDef> Ширина </th>
-        <td mat-cell *matCellDef="let product"> {{product.widthCm}} </td>
+        <td mat-cell *matCellDef="let product"> {{product.widthCm ?? '-'}} </td>
       </ng-container>
 
       <ng-container matColumnDef="heightCm">
         <th mat-header-cell *matHeaderCellDef> Высота </th>
-        <td mat-cell *matCellDef="let product"> {{product.heightCm}} </td>
+        <td mat-cell *matCellDef="let product"> {{product.heightCm ?? '-'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Категория</th>
+        <td mat-cell *matCellDef="let product"> {{product.category.parent}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="subCategory">
+        <th mat-header-cell *matHeaderCellDef>Подкатегория</th>
+        <td mat-cell *matCellDef="let product"> {{product.category.child}} </td>
       </ng-container>
 
       <ng-container matColumnDef="soldOut">
         <th mat-header-cell *matHeaderCellDef> Распродано </th>
-        <td mat-cell *matCellDef="let product"> {{product.soldOut}} </td>
+        <td mat-cell *matCellDef="let product"> {{product.soldOut ? 'Распродано' : '-' }} </td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
