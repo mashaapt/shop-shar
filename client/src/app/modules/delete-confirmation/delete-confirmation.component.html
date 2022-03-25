@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Вы уверены?</h2>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button color="primary" mat-dialog-close>Отменить</button>
+
+  <button mat-stroked-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>
+    Удалить
+  </button>
+</mat-dialog-actions>

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { CategoryService } from 'src/app/services/category.service';
-import { ProductService } from 'src/app/services/product.service';
 import { Category } from '../../../../../common/interfaces/category.interface';
 import { Product } from '../../../../../common/interfaces/product.interface';
 import { uniq } from 'lodash';
 import {MatDialog} from '@angular/material/dialog';
+import { CategoryService } from 'src/app/services/category.service';
+import { ProductService } from 'src/app/services/product.service';
+import { DeleteConfirmationComponent } from 'src/app/modules/delete-confirmation/delete-confirmation.component';
 
 
 @Component({
@@ -86,18 +87,17 @@ export class AdminComponent implements OnInit {
   }
 
   async clickedDeleteCategory(id: string) {
+    const confirmation = this.dialog.open(DeleteConfirmationComponent);
+
+    await confirmation.afterClosed().subscribe(result => {
+        console.log(result);
+    });
+  }
+
+  private async deleteCategory(id: string) {
     await this.categoryService.deleteCategory(id);
     this.loadCategories();
   }
-
-  async openDialog() {
-    const confirmation = this.dialog.open(ConfirmationDialog);
-    await confirmation.afterClosed().subscribe(result => {
-
-    });
-  }
-  export class ConfirmationDialog {}
-
 
   async clickedAddProduct() {
     const product: Partial<Product> = {

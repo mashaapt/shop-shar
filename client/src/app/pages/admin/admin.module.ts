@@ -9,6 +9,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
+import { DeleteConfirmationModule } from 'src/app/modules/delete-confirmation/delete-confirmation.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatButtonModule,
     MatTableModule,
     MatCheckboxModule,
-    MatSelectModule
+    MatSelectModule,
+    DeleteConfirmationModule
   ]
 })
 export class AdminModule { };
