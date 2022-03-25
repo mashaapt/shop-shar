@@ -5,6 +5,8 @@ import { ProductService } from 'src/app/services/product.service';
 import { Category } from '../../../../../common/interfaces/category.interface';
 import { Product } from '../../../../../common/interfaces/product.interface';
 import { uniq } from 'lodash';
+import {MatDialog} from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-admin',
@@ -34,6 +36,7 @@ export class AdminComponent implements OnInit {
     this.loadProducts();
   }
 
+  public dialog: MatDialog;
   async ngOnInit() {
 
 
@@ -86,6 +89,15 @@ export class AdminComponent implements OnInit {
     await this.categoryService.deleteCategory(id);
     this.loadCategories();
   }
+
+  async openDialog() {
+    const confirmation = this.dialog.open(ConfirmationDialog);
+    await confirmation.afterClosed().subscribe(result => {
+
+    });
+  }
+  export class ConfirmationDialog {}
+
 
   async clickedAddProduct() {
     const product: Partial<Product> = {
