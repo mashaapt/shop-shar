@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Category } from '../../../../../common/interfaces/category.interface';
-import { Product } from '../../../../../common/interfaces/product.interface';
+import { Product, Shape_Types } from '../../../../../common/interfaces/product.interface';
 import { uniq } from 'lodash';
 import {MatDialog} from '@angular/material/dialog';
 import { CategoryService } from 'src/app/services/category.service';
@@ -17,6 +17,12 @@ import { DeleteConfirmationComponent } from 'src/app/modules/delete-confirmation
 export class AdminComponent implements OnInit {
   newCategoryForm: FormGroup;
   categories: Category[];
+  makers = [
+    '',
+    ''
+  ];
+  shapes = Shape_Types;
+
   newProductForm: FormGroup;
   products: Product[];
   categoryDisplayedColumns = ['parent', 'child', 'actions'];
@@ -30,14 +36,15 @@ export class AdminComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private productService: ProductService,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private dialog: MatDialog) {
 
     this.initForm();
     this.loadCategories();
     this.loadProducts();
   }
 
-  public dialog: MatDialog;
+
   async ngOnInit() {
 
 
@@ -86,11 +93,13 @@ export class AdminComponent implements OnInit {
     this.newCategoryForm.reset();
   }
 
-  async clickedDeleteCategory(id: string) {
+  clickedDeleteCategory(id: string) {
     const confirmation = this.dialog.open(DeleteConfirmationComponent);
 
-    await confirmation.afterClosed().subscribe(result => {
-        console.log(result);
+    confirmation.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteCategory(id);
+      }
     });
   }
 
