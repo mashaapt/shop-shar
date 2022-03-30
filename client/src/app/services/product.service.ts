@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../../../../common/interfaces/product.interface';
-import { lastValueFrom } from "rxjs";
+import { last, lastValueFrom } from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
@@ -21,6 +21,11 @@ export class ProductService {
     const request = this.http.get<Product[]>('api/products');
     return lastValueFrom(request);
   }
+
+  editProduct(product: Product) {
+    const request = this.http.put<Product>(`api/products`, product);
+    return lastValueFrom(request);
+  } 
 
   deleteProduct(id: string) {
     const request = this.http.delete<Product>(`api/products/${id}`);

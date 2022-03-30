@@ -15,6 +15,7 @@
           <input matInput formControlName="subCategory" type="text" class="form-control">
         </mat-form-field>
 
+
         <button mat-stroked-button color="primary" class="addcat-btn" [disabled]="newCategoryForm.invalid"
           (click)="clickedAddCategory()">
           Добавить
@@ -115,14 +116,61 @@
           </mat-select>
         </mat-form-field>
 
+        <mat-form-field appearance="fill">
+          <mat-label>Цвет</mat-label>
+          <input type="text" matInput formControlName="color" [matAutocomplete]="colorAuto">
+
+          <mat-autocomplete autoActiveFirstOption #colorAuto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredColorOptions" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Форма</mat-label>
+          <input type="text" matInput formControlName="shape" [matAutocomplete]="shapeAuto">
+
+          <mat-autocomplete autoActiveFirstOption #shapeAuto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredShapeOptions" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Тип</mat-label>
+          <input type="text" matInput formControlName="type" [matAutocomplete]="typeAuto">
+
+          <mat-autocomplete autoActiveFirstOption #typeAuto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredBalloonTypeOptions" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Производитель</mat-label>
+          <input type="text" matInput formControlName="maker" [matAutocomplete]="makerAuto">
+
+          <mat-autocomplete autoActiveFirstOption #makerAuto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMakerOptions" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
         <mat-checkbox formControlName="soldOut" class="form-control">
           Распродано
         </mat-checkbox>
 
       </form>
-      <button mat-stroked-button color="primary" class="addprod-btn" [disabled]="newProductForm.invalid"
-        (click)="clickedAddProduct()">
+      <button *ngIf="!editingProduct" mat-stroked-button color="primary" class="addprod-btn"
+        [disabled]="newProductForm.invalid" (click)="clickedAddProduct()">
         Добавить
+      </button>
+      <button *ngIf="editingProduct" mat-stroked-button color="primary" (click)="clickedSaveProduct">
+        Сохранить
       </button>
     </div>
 
@@ -178,16 +226,44 @@
         <td mat-cell *matCellDef="let product"> {{product.category.child}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="color">
+        <th mat-header-cell *matHeaderCellDef> Цвет </th>
+        <td mat-cell *matCellDef="let product"> {{product.color || '-'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="shape">
+        <th mat-header-cell *matHeaderCellDef> Форма </th>
+        <td mat-cell *matCellDef="let product"> {{product.shape || '-' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Тип </th>
+        <td mat-cell *matCellDef="let product"> {{product.type || '-' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="maker">
+        <th mat-header-cell *matHeaderCellDef> Производитель </th>
+        <td mat-cell *matCellDef="let product"> {{product.maker || '-' }} </td>
+      </ng-container>
+
       <ng-container matColumnDef="soldOut">
         <th mat-header-cell *matHeaderCellDef> Распродано </th>
         <td mat-cell *matCellDef="let product"> {{product.soldOut ? 'Распродано' : '-' }} </td>
       </ng-container>
 
-      <ng-container matColumnDef="actions">
+      <ng-container matColumnDef="actions1">
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let product">
-          <button mat-stroked-button color="primary" class="deleteprod-btn"
-            (click)="clickedDeleteProduct(product._id)">
+          <button mat-stroked-button color="primary" class="editprod-btn" (click)="clickedEditProduct(product)">
+            Изменить
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions2">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let product">
+          <button mat-stroked-button color="primary" class="deleteprod-btn" (click)="clickedDeleteProduct(product._id)">
             Удалить
           </button>
         </td>

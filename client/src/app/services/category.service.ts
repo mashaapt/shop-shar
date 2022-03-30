@@ -24,6 +24,8 @@ export class CategoryService {
 
   deleteCategory(id: string) {
     const request = this.http.delete<Category>(`api/categories/${id}`);
+
+    
     return lastValueFrom(request);
   }
   

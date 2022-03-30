@@ -2,6 +2,7 @@ import { isArray } from 'lodash';
 import { InterceptorInterface, Action } from 'routing-controllers';
 
 const getItem = result => {
+  delete result._doc.__v;
   result._doc._id = result._doc._id.toString();
   return result._doc;
 }

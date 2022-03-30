@@ -10,6 +10,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import { DeleteConfirmationModule } from 'src/app/modules/delete-confirmation/delete-confirmation.module';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { DeleteConfirmationModule } from 'src/app/modules/delete-confirmation/de
     MatTableModule,
     MatCheckboxModule,
     MatSelectModule,
+    MatAutocompleteModule,
     DeleteConfirmationModule
   ]
 })
