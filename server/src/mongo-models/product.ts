@@ -7,7 +7,7 @@ const productSchema = new Schema<Product>({
   code: { type: String, required: true },
   category: { type: Object, required: true } ,
   price: { type: Number, required: true },
-  pieces: { type: Number, required: true },
+  pieces: { type: Number, required: false },
   sizeCm: { type: Number, required: false },
   widthCm: { type: Number, required: false },
   heightCm: { type: Number, required: false },

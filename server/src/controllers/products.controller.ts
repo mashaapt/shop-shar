@@ -4,6 +4,7 @@ import { Body, Delete, Get, JsonController, Param, Post, Put, UseInterceptor } f
 import { MongoInterceptor } from '../middleware/mongoose-middleware';
 import { Product } from '../../../common/interfaces/product.interface';
 
+
 @JsonController('/api/products')
 @UseInterceptor(MongoInterceptor)
 export class ProductsController {
@@ -33,8 +34,9 @@ export class ProductsController {
 
     @Put()
     async editProduct(@Body() product: Product) {
-        
+        const result = await MongoProduct.updateOne({ _id: product._id }, product)
 
+        return result;
     }
 
     @Delete('/:productId')
