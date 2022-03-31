@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Category } from '../../../../../common/interfaces/category.interface';
 import { Balloon_Types, Colors, Maker, Makers, Product, Shapes } from '../../../../../common/interfaces/product.interface';
@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 import { DeleteConfirmationComponent } from 'src/app/modules/delete-confirmation/delete-confirmation.component';
-import { map, startWith } from 'rxjs';
+import { map, startWith, Subject } from 'rxjs';
 
 
 @Component({
@@ -16,41 +16,69 @@ import { map, startWith } from 'rxjs';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-  newCategoryForm: FormGroup;
+  newCategoryForm: FormGroup; //keeps the values from the inputs in the category form
+  newProductForm: FormGroup;  //keeps the vvalues from the inputs in the product form
+
+  productFormInitialValues: Product; //the initial empty form with properties of the Product interface
+
+  //list of category objects retrieved from the db using the category service
+  //used as the [dataSource] for the categories grid(table)
+  //this property is set when the AdminComponent loads
   categories: Category[];
-  makers = Makers; //this is string array used in the autocomplete for products
-  shapes = Shapes; //this is string array used in the autocomplete for products
-  balloonTypes = Balloon_Types; //this is string array used in the autocomplete for products
-  colors = Colors; //this is string array used in the autocomplete for products
-  editingProduct: Product; //prop that keeps the list htat is on the Product interface
 
-  filteredColorOptions: string[]; //option that you might choose in the dropdown
-  filteredShapeOptions: string[]; //option that you might choose in the dropdown
-  filteredBalloonTypeOptions: string[]; //option that you might choose in the dropdown
-  filteredMakerOptions: string[]; //option that you might choose in the dropdown
+  //list of product objects retrieved from the db using the product service
+  //use as the [dataSource] for the categories grid(table)
+  //this property is set when the AdminComponent loads
+  products: Product[];
 
+  //the Product object currently being edited.
+  //when we click 'Изменить' we set this property to the product we clicked
+  //when we click 'Отменить' we set this property to 'null'
+  editingProduct: Product;
 
-  newProductForm: FormGroup; //new tthings that you put in the empty form
-  productFormInitialValues: Product; //the initial empty for with properties of the Product interface
+  //options for autocomplete dropdowns after filtering using a search term from the input(when you write smth)
+  filteredColorOptions: string[];
+  filteredShapeOptions: string[];
+  filteredBalloonTypeOptions: string[];
+  filteredMakerOptions: string[];
 
-  products: Product[]; //prop that keeps array of products
+  //list of property keys from the category object for which columns will be dislayed in the categories table
   categoryDisplayedColumns = ['parent', 'child', 'actions'];
+  //list of property keys from te product object for which columns will be displayed in the products table
   productDisplayedColumns = ['title', 'description', 'code', 'price', 'pieces', 'sizeCm', 'widthCm', 'heightCm', 'category', 'subCategory', 'color', 'shape', 'type', 'maker', 'soldOut', 'actions1', 'actions2'];
-  //props that should be in columns
 
-  categoryOptions = []; //options of cateogries in the dropdown
-  subcategoryOptions = []; //options of subcateogries in the dropdown
+  //list of categories used in the category dropdown in the product form
+  //set to unique values of the 'parent' properties from the categories retrieved from the db
+  categoryOptions: string[] = [];
+
+  //list of subcategories used in the subcategory dropdown in the product form
+  //set to unique values of the 'child' properties from the categories retrieved from the db
+  subcategoryOptions = [];
 
 
   constructor(
+    //used to make http requests to the category API on the server to add/delete/edit categories
     private categoryService: CategoryService,
+
+    //used to make http requests to the product API on the server to add/delete/edit products
     private productService: ProductService,
+
+    //angular service used to create formgroups with less code
     private formBuilder: FormBuilder,
+
+    //angular material service used to open dialogs
+    //used by us to show a confirmation popup before deleting a category
     private dialog: MatDialog) {
 
+    //used to initialize a product and category FormGroup(s) using the FormBuilder service
+    //also used to record the initial state of the product form for later resetting
     this.initForm();
-    this.loadCategories(); //for loading categories from db
-    this.loadProducts(); //for loading products from db
+
+    //loads the categories from the db using the CategoryService
+    //sets the unique values used in the category dropdowns in the product form
+    this.loadCategories();
+    //loads the products from the db using the ProductService
+    this.loadProducts();
 
   }
 
@@ -64,71 +92,98 @@ export class AdminComponent implements OnInit {
 
   initColorsAutocomplete() {
 
-    this.newProductForm.controls.color.valueChanges //in our form we take formControlName 'color' from the controls and set valueChanges to watch if you write smth or not
-      .pipe(startWith('')) //the middleware that set startWith func that even with the empty space in the input there will be seen the options in the dropdown
+    //valueChanges is an Observable which emits when the value of the color FormControl changes
+    //this happens when the user types into the input connected to this Formcontrol
+    this.newProductForm.controls.color.valueChanges
+      .pipe(startWith('')) //causes the Observable to emit an initial value(empty string)
       .subscribe((typedColor: string) => {
         const lowerCaseTyped = typedColor.toLowerCase();
 
-        this.filteredColorOptions = this.colors.filter(color => {
+        //filter the colors based on the typed search term
+        //we lowercase both the search term and the color so that it's not case-sensitive
+        this.filteredColorOptions = Colors.filter(color => {
           return color.toLowerCase().includes(lowerCaseTyped);
-        }); //when you type smth in upper or lower case the items from the options will be shown if there are those typed letters
+        });
       });
   }
 
   initShapesAutoComplete() {
 
-    this.newProductForm.controls.shape.valueChanges //in our form we take formControlName 'shape' from the controls and set valueChanges to watch if you write smth or not
-      .pipe(startWith('')) //the middleware that set startWith func that even with the empty space in the input there will be seen the options in the dropdown
+    //valueChanges is an Observable which emits when the value of the shape FormControl changes
+    //this happens when the user types into the input connected to this FormControl
+    this.newProductForm.controls.shape.valueChanges
+      .pipe(startWith('')) //causes the Observable to emit an initial value(empty string)
       .subscribe((typedShape: string) => {
         const lowerCaseTyped = typedShape.toLowerCase();
 
-        this.filteredShapeOptions = this.shapes.filter(shape => {
+        //filter the shapes based on the typed search term
+        //we lowercase both the search term and the shape so that it's not case-sensitive
+        this.filteredShapeOptions = Shapes.filter(shape => {
           return shape.toLowerCase().includes(lowerCaseTyped);
-        }); //when you type smth in upper or lower case the items from the options will be shown if there are those typed letters
+        });
       });
   }
 
   initBalloonTypesAutoComplete() {
-    this.newProductForm.controls.type.valueChanges //in our form we take formControlName 'type' from the controls and set valueChanges to watch if you write smth or not
-      .pipe(startWith('')) //the middleware that set startWith func that even with the empty space in the input there will be seen the options in the dropdown
+
+    //valueChanges is an Observable which emits when the value of the balloon type FormControl changes
+    //this happens when the user types into the input connected to this FormControl
+    this.newProductForm.controls.type.valueChanges
+      .pipe(startWith('')) //causes the Observable to emit an initial value(empty string)
       .subscribe((typedBalloonType: string) => {
         const lowerCaseTyped = typedBalloonType.toLowerCase();
 
-        this.filteredBalloonTypeOptions = this.balloonTypes.filter(balloonType => {
+        //filter the balloon types based on the typed search term
+        //we lowercase both the search term and the balloon type so that it's not case-sensitive
+        this.filteredBalloonTypeOptions = Balloon_Types.filter(balloonType => {
           return balloonType.toLowerCase().includes(lowerCaseTyped);
-        }); //when you type smth in upper or lower case the items from the options will be shown if there are those typed letters
+        });
       });
   }
 
   initMakersAutoComplete() {
-    this.newProductForm.controls.maker.valueChanges //in our form we take formControlName 'maker' from the controls and set valueChanges to watch if you write smth or not
-      .pipe(startWith('')) //the middleware that set startWith func that even with the empty space in the input there will be seen the options in the dropdown
+
+    //valueChanges is an Observable which emits when the value of the maker FormControl changes
+    //this happens when the user types into the input connected to this FormControl
+    this.newProductForm.controls.maker.valueChanges
+      .pipe(startWith('')) //causes the Observable to emit an initial value(empty string)
       .subscribe((typedMaker: string) => {
         const lowerCaseTyped = typedMaker.toLowerCase();
 
-        this.filteredMakerOptions = this.makers.filter(maker => {
+        //filter the makers based on the typed search term
+        //we lowercase both, the search term and the maker so that it's not case-sensitive
+        this.filteredMakerOptions = Makers.filter(maker => {
           return maker.toLowerCase().includes(lowerCaseTyped);
-        }); //when you type smth in upper or lower case the items from the options will be shown if there are those typed letters
+        });
       });
   }
 
   private async loadCategories() {
-    this.categories = await this.categoryService.getAllCategories(); //we use get func to take categories by the api from the db
-    this.categoryOptions = uniq(this.categories.map(category => category.parent.trim())); //we use uniq  method that there werent any repeats in or list of categories
-    this.subcategoryOptions = uniq(this.categories.map(category => category.child.trim())); //we use uniq  method that there werent any repeats in or list of subcategories
-  }                                                                                        //trim takes away the white space
+    //we use the CategoryService to retrieve categories from the database via the API
+    this.categories = await this.categoryService.getAllCategories();
+
+    //set to unique values of the 'parent' properties from the categories retrieved from the db
+    //we use the uniq method to remove duplicates from our list of categories
+    //trim takes away the white space
+    this.categoryOptions = uniq(this.categories.map(category => category.parent.trim()));
+    this.subcategoryOptions = uniq(this.categories.map(category => category.child.trim()));
+  }
 
   private async loadProducts() {
-    this.products = await this.productService.getAllProducts(); //we use get func to take products by the api from the db
+    this.products = await this.productService.getAllProducts();
+    //we use the ProductService to retrieve products from the db vie the API
   }
 
   private initForm() {
-    this.newCategoryForm = this.formBuilder.group({ //we initialize form of cat and subcat for the first page where we add just them
+
+    //used to initialize a category FormGroup using the FormBuilder service
+    this.newCategoryForm = this.formBuilder.group({
       category: ['', [Validators.required]],
       subCategory: ['', [Validators.required]]
     });
 
-    this.newProductForm = this.formBuilder.group({ //we initialize form of products' properties for the second page where we can add new products
+    //used to initialize a product FormGroup using the FormBuilder service
+    this.newProductForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
       code: ['', [Validators.required]],
@@ -146,46 +201,70 @@ export class AdminComponent implements OnInit {
       soldOut: [false, []]
     });
 
-    this.productFormInitialValues = this.newProductForm.value; //we take this newProducForm as an initial form that we can use later to get to the initial empty form of products
+    //we take this newProducForm as an initial form that we can use later to get to the initial empty form of products
+    this.productFormInitialValues = this.newProductForm.value;
   }
 
   async clickedAddCategory() {
-    const category: Category = { //we take cat/subcat 's values from Category interface and put them in var category
+    //create a category object from the values in the form
+    //(the FormGroup contains the values in the inputs)
+    const category: Category = {
       parent: this.newCategoryForm.value.category,
       child: this.newCategoryForm.value.subCategory
     };
 
-    await this.categoryService.addCategory(category); //we take that var and if there any cahnges for adding something new we add it through api to the db
-    this.loadCategories(); //to see the list after all
+    //call the CategoryService to add the category to the database using the API
+    await this.categoryService.addCategory(category);
 
-    this.newCategoryForm.reset(); //we make our form empty again that we could write new one
+    //reload all the categories to see the new category we added
+    this.loadCategories();
+
+    //we make our form empty again that we could write new one
+    this.newCategoryForm.reset();
   }
 
+  //this method gets called when we click the delete button
   clickedDeleteCategory(id: string) {
-    const confirmation = this.dialog.open(DeleteConfirmationComponent); //when we click delete btn we open with this method the dialog of confirmatino that asks if you're sure
+    //use the material MatDialog service to open the confirmation component in a popup (asking "Are you sure?")
+    const confirmation = this.dialog.open(DeleteConfirmationComponent);
 
-    confirmation.afterClosed().subscribe(result => {  //subscribe bind our decision with the result, so if there is delete deciision result then the cat will be deleted
+    //afterClosed() returns an Observable that triggers when the popup is closed
+    confirmation.afterClosed().subscribe(result => {
+
+      //the result will be the value we pass to the [mat-dialog-close] input in delete-confirmation.component.html
       if (result) {
-        this.deleteCategory(id); //we delete it by id so there is only one that we delete
+        //after confirmation we delete one of the categories
+        this.deleteCategory(id);
       }
     });
   }
 
   private async deleteCategory(id: string) {
-    await this.categoryService.deleteCategory(id); //we delete it by id (one) from our api and then fron the db
-    this.loadCategories(); //to see the list after all
+    //we delete it by id (one) from the database using the API
+    await this.categoryService.deleteCategory(id);
+
+    //after deleting the category, we reload all categories to see the category disappear from the UI
+    this.loadCategories();
   }
 
   async clickedAddProduct() {
     const product = this.makeProductFromForm();
-    await this.productService.addProduct(product); //we take product from our form and add it throught the api to the db
-    this.loadProducts(); //to see the list after all
 
-    this.newProductForm.setValue(this.productFormInitialValues); //then we set the initiaal value so there is an empty form again
+    //call the CategoryService to add the product to the database using the API
+    await this.productService.addProduct(product);
+
+    //reload all the categories to see the new category we added
+    this.loadProducts();
+
+    //then we set the initiaal value so there is an empty form again
+    this.newProductForm.setValue(this.productFormInitialValues);
   }
 
-  makeProductFromForm() { //we made new form from the old one that takes all props from the Product interface
-    const product: Partial<Product> = { //so we can use this var to return values for every property
+
+  makeProductFromForm() {
+    //create a product object from the values in the form
+    //(the FormGroup(newProductForm) contains the values in the inputs)
+    const product: Product = {
       title: this.newProductForm.value.title,
       description: this.newProductForm.value.description,
       code: this.newProductForm.value.code,
@@ -205,14 +284,26 @@ export class AdminComponent implements OnInit {
       soldOut: this.newProductForm.value.soldOut
     };
 
-    return product as Product; //it will  return the product due to Product interface
+    return product;
   }
 
-  clickedEditProduct(product: Product) {
-    this.editingProduct = product; //eddting product is one of the prducts from the list that you edit due to all the properties from the Product interface
 
-    this.newProductForm.patchValue({ //we patch(get) cat and subcat for the new form after clicking but we omit(delete) the id cause they inextricable(неразрывные)
+  clickedEditProduct(product: Product) {
+
+    //'product' is one of the products from the list that you clicked edit button on
+    //here we set 'editingProduct' to that product that we clicked
+    this.editingProduct = product;
+
+
+    //'patchValue()' updates the values of controls for every property in the object provided
+    this.newProductForm.patchValue({
+
+      //the 'omit' function removes the specified properties from the object(_id), (returns a new object without those properties)
+      //we need to omit the '_id' because there is no control for '_id' in the FormGroup
+      //all the rest of the properties on 'product' can be used to update their respective controls
       ...omit(product, '_id'),
+
+      //update the category and subCategory control values on the form
       category: product.category.parent,
       subCategory: product.category.child
 
@@ -220,24 +311,43 @@ export class AdminComponent implements OnInit {
   }
 
   async clickedSaveProduct() {
-    const product = this.makeProductFromForm(); //we take the same product from the form
-    product._id = this.editingProduct._id; //we equal each item of the product to the editing one - so its just item/s that you have edited before
-    await this.productService.editProduct(product); //we pass the edited product through the api from the db
 
-    this.editingProduct = null; //after saving it to db, we remove the buttons save and cancel
-    this.loadProducts(); //to see the changed item/s in our list after all
-    this.newProductForm.reset(this.productFormInitialValues); //we make our form empty again that we could edit or add another one
+    //create a product from the form values (in the inputs)
+    const product = this.makeProductFromForm();
+
+    //we need to add the _id property so that it gets sent to the server, and the database can update by id
+    product._id = this.editingProduct._id;
+
+    //we pass the edited product (with the updated values) to the API for it to be saved in the database
+    await this.productService.editProduct(product);
+
+    //when done editing, setting this to null will cause the Save and Cancel buttons to disappear (because of *ngIf on this property)
+    this.editingProduct = null;
+
+    //reload all the products to see that the changed product has been saved
+    this.loadProducts();
+
+    //return the product form to its initial state (initial state set in initForm() )
+    this.newProductForm.reset(this.productFormInitialValues);
 
   }
 
   clickedCancel() {
-    this.newProductForm.reset(this.productFormInitialValues); //we cancel our edit by the reset, so there is the initial state of the form - empty form
-    this.editingProduct = null; //after canceling the action we remove the buttons save and cancel
+
+    //we cancel our edit by the reset, so there is the initial state of the form (empty)
+    this.newProductForm.reset(this.productFormInitialValues);
+
+    //when done editing, setting this to null will cause the Save and Cancel buttons to disappear (because of *ngIf on this property)
+    this.editingProduct = null;
   }
 
   async clickedDeleteProduct(id: string) {
-    await this.productService.deleteProduct(id); //we delete one of the product by id(one) through the api to the db
-    this.loadProducts(); //to see the list after all(without one of the products)
+
+    //we delete one of the products by id(one) through the api to the db
+    await this.productService.deleteProduct(id);
+
+    //reload the list of products(without one of the products)
+    this.loadProducts();
   }
 
 
