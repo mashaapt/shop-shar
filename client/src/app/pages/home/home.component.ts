@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown } from '@fortawesome/pro-regular-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/pro-regular-svg-icons';
+import { faCartShopping } from '@fortawesome/pro-regular-svg-icons';
+import { Balloon_Types, Colors, Maker, Makers, Product, Shapes } from '../../../../../common/interfaces/product.interface';
+import { uniq, omit } from 'lodash';
+import { CategoryService } from 'src/app/services/category.service';
+import { Category } from '../../../../../common/interfaces/category.interface';
 
 @Component({
   selector: 'app-home',
@@ -13,9 +17,25 @@ export class HomeComponent implements OnInit {
   faMagnifyingGlass = faMagnifyingGlass;
   faCartShopping = faCartShopping;
 
-  constructor() { }
+  categories: Category[];
+  categoryParents: string[] = [];
+
+
+  constructor(
+    private categoryService: CategoryService
+  ) {
+    this.loadCategories();
+   }
 
   ngOnInit(): void {
+  }
+
+  async loadCategories() {
+    this.categories = await this.categoryService.getAllCategories();
+
+    this.categoryParents = uniq(this.categories.map(category => category.parent));
+
+    console.log(this.categoryParents)
   }
 
 }

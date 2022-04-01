@@ -6,25 +6,25 @@
   
     <div class="navigation">
       <ul>
-        <a href="">Главная</a>
-        <a href="">Продукция</a>
-        <a href="">Оплата</a>
-        <a href="">Доставка</a>
+        <a routerLink="/">Главная</a>
+        <a routerLink="/products">Продукция</a>
+        <a routerLink="/payment">Оплата</a>
+        <a routerLink="/delivery">Доставка</a>
       </ul>
     </div>
   
     <div class="numbers">
       <p>+38 067 59 88 936</p>
-      <fa-icon [icon]="faChevronDown"></fa-icon>
+      <fa-icon [icon]="faChevronDown" size="lg"></fa-icon>
     </div>
   
     <div class="icons">
       <button class="mgglass">
-        <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
+        <fa-icon [icon]="faMagnifyingGlass" size="lg"></fa-icon>
       </button>
       
       <button class="cart">
-        <fa-icon [icon]="faCartShopping"></fa-icon>
+        <fa-icon [icon]="faCartShopping" size="lg"></fa-icon>
       </button>
       
     </div>
@@ -41,46 +41,14 @@
     <h3>КАТЕГОРИИ</h3>
 
     <ul>
-      <li>
+      <li  *ngFor="let category of categoryParents; index as i">
         <a href="">
-          <img class="cat1" src="./../../../assets/images/categories1.svg" alt="balloons">
-          <h2>Латексные шары</h2>
+          
+          <img class="cat{{i}}" src="./../../../assets/images/categories/{{category}}.svg" alt="balloons">
+          <h2>{{category}}</h2>
+
         </a>
       </li>
 
-      <li>
-        <a href="">
-          <img class="cat2" src="./../../../assets/images/categories2.svg" alt="foil balloons">
-          <h2>Фольгированные шары</h2>
-        </a>
-      </li>
-
-      <li>
-        <a href="">
-          <img class="cat3" src="./../../../assets/images/categories3.svg" alt="accessories">
-          <h2>Аксессуары для шаров</h2>
-        </a>
-      </li>
-
-      <li>
-        <a href="">
-          <img class="cat4" src="./../../../assets/images/categories4.svg" alt="confetti">
-          <h2>Всё для праздника</h2>
-        </a>
-      </li>
-
-      <li>
-        <a href="">
-          <img class="cat5" src="./../../../assets/images/categories5.svg" alt="calendar">
-          <h2>Календари</h2>
-        </a>
-      </li>
-
-      <li>
-        <a href="">
-          <img class="cat6" src="./../../../assets/images/categories6.svg" alt="wrapping paper">
-          <h2>Упаковочная бумага</h2>
-        </a>
-      </li>
     </ul>
   </div>

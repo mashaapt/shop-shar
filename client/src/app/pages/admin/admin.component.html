@@ -165,14 +165,14 @@
         </mat-checkbox>
 
       </form>
-      <button *ngIf="!editingProduct" mat-stroked-button color="primary" class="addprod-btn"
+      <button *ngIf="!editingProductId" mat-stroked-button color="primary" class="addprod-btn"
         [disabled]="newProductForm.invalid" (click)="clickedAddProduct()">
         Добавить
       </button>
-      <button *ngIf="editingProduct" mat-stroked-button color="primary" class="save-btn" (click)="clickedSaveProduct()">
+      <button *ngIf="editingProductId" mat-stroked-button color="primary" class="save-btn" (click)="clickedSaveProduct()">
         Сохранить
       </button>
-      <button *ngIf="editingProduct" mat-stroked-button color="primary" class="cancel-btn" (click)="clickedCancel()">
+      <button *ngIf="editingProductId" mat-stroked-button color="primary" class="cancel-btn" (click)="clickedCancel()">
         Отменить
       </button>
     </div>

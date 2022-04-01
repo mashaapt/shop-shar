@@ -17,10 +17,11 @@ import { map, startWith, Subject } from 'rxjs';
 })
 export class AdminComponent implements OnInit {
   newCategoryForm: FormGroup; //keeps the values from the inputs in the category form
-  newProductForm: FormGroup;  //keeps the vvalues from the inputs in the product form
-
-  productFormInitialValues: Product; //the initial empty form with properties of the Product interface
-
+  newProductForm: FormGroup;  //keeps the values from the inputs in the product form
+  
+  //the initial empty form with properties of the Product interface
+  productFormInitialValues: Product; 
+  
   //list of category objects retrieved from the db using the category service
   //used as the [dataSource] for the categories grid(table)
   //this property is set when the AdminComponent loads
@@ -31,18 +32,18 @@ export class AdminComponent implements OnInit {
   //this property is set when the AdminComponent loads
   products: Product[];
 
-  //the Product object currently being edited.
-  //when we click 'Изменить' we set this property to the product we clicked
+  //the id of the product currently being edited.
+  //when we click 'Изменить' we set this property to the id of product we clicked
   //when we click 'Отменить' we set this property to 'null'
-  editingProduct: Product;
+  editingProductId: string;
 
-  //options for autocomplete dropdowns after filtering using a search term from the input(when you write smth)
+  //options for autocomplete dropdowns after filtering, using a search term from the input(when you write smth)
   filteredColorOptions: string[];
   filteredShapeOptions: string[];
   filteredBalloonTypeOptions: string[];
   filteredMakerOptions: string[];
 
-  //list of property keys from the category object for which columns will be dislayed in the categories table
+  //list of property keys from the category object for which columns will be displayed in the categories table
   categoryDisplayedColumns = ['parent', 'child', 'actions'];
   //list of property keys from te product object for which columns will be displayed in the products table
   productDisplayedColumns = ['title', 'description', 'code', 'price', 'pieces', 'sizeCm', 'widthCm', 'heightCm', 'category', 'subCategory', 'color', 'shape', 'type', 'maker', 'soldOut', 'actions1', 'actions2'];
@@ -57,6 +58,8 @@ export class AdminComponent implements OnInit {
 
 
   constructor(
+
+    ///ALL CONSTRUCTOR PARAMETERS ARE INJECTED BY ANGULAR BASED ON THE TYPE
     //used to make http requests to the category API on the server to add/delete/edit categories
     private categoryService: CategoryService,
 
@@ -70,6 +73,9 @@ export class AdminComponent implements OnInit {
     //used by us to show a confirmation popup before deleting a category
     private dialog: MatDialog) {
 
+
+
+
     //used to initialize a product and category FormGroup(s) using the FormBuilder service
     //also used to record the initial state of the product form for later resetting
     this.initForm();
@@ -77,6 +83,7 @@ export class AdminComponent implements OnInit {
     //loads the categories from the db using the CategoryService
     //sets the unique values used in the category dropdowns in the product form
     this.loadCategories();
+
     //loads the products from the db using the ProductService
     this.loadProducts();
 
@@ -171,7 +178,7 @@ export class AdminComponent implements OnInit {
 
   private async loadProducts() {
     this.products = await this.productService.getAllProducts();
-    //we use the ProductService to retrieve products from the db vie the API
+    //we use the ProductService to retrieve products from the db via the API
   }
 
   private initForm() {
@@ -209,8 +216,8 @@ export class AdminComponent implements OnInit {
     //create a category object from the values in the form
     //(the FormGroup contains the values in the inputs)
     const category: Category = {
-      parent: this.newCategoryForm.value.category,
-      child: this.newCategoryForm.value.subCategory
+      parent: this.newCategoryForm.value.category.trim(),
+      child: this.newCategoryForm.value.subCategory.trim()
     };
 
     //call the CategoryService to add the category to the database using the API
@@ -256,7 +263,7 @@ export class AdminComponent implements OnInit {
     //reload all the categories to see the new category we added
     this.loadProducts();
 
-    //then we set the initiaal value so there is an empty form again
+    //then we set the initial value so there is an empty form again
     this.newProductForm.setValue(this.productFormInitialValues);
   }
 
@@ -291,8 +298,8 @@ export class AdminComponent implements OnInit {
   clickedEditProduct(product: Product) {
 
     //'product' is one of the products from the list that you clicked edit button on
-    //here we set 'editingProduct' to that product that we clicked
-    this.editingProduct = product;
+    //here we set 'editingProductId' to the id of product that we clicked
+    this.editingProductId = product._id;
 
 
     //'patchValue()' updates the values of controls for every property in the object provided
@@ -315,14 +322,14 @@ export class AdminComponent implements OnInit {
     //create a product from the form values (in the inputs)
     const product = this.makeProductFromForm();
 
-    //we need to add the _id property so that it gets sent to the server, and the database can update by id
-    product._id = this.editingProduct._id;
+    //we need to add the _id property so that it will be sent to the server, and the database can update by id
+    product._id = this.editingProductId;
 
     //we pass the edited product (with the updated values) to the API for it to be saved in the database
     await this.productService.editProduct(product);
 
     //when done editing, setting this to null will cause the Save and Cancel buttons to disappear (because of *ngIf on this property)
-    this.editingProduct = null;
+    this.editingProductId = null;
 
     //reload all the products to see that the changed product has been saved
     this.loadProducts();
@@ -338,7 +345,7 @@ export class AdminComponent implements OnInit {
     this.newProductForm.reset(this.productFormInitialValues);
 
     //when done editing, setting this to null will cause the Save and Cancel buttons to disappear (because of *ngIf on this property)
-    this.editingProduct = null;
+    this.editingProductId = null;
   }
 
   async clickedDeleteProduct(id: string) {

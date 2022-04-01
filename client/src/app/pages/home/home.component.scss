@@ -105,6 +105,7 @@ nav .icons {
         grid-gap: 1em;
 
         li {
+            height: 400px;
             list-style: none;
             position: relative;
             box-shadow: 0px 4px 30px rgb(211 236 255 / 70%);
@@ -117,31 +118,31 @@ nav .icons {
                 align-items: end;
             }
 
-            .cat1 {
+            .cat0 {
                 height: 90%;
             }
 
-            .cat2{
+            .cat1{
                 height: 90%;
                 width: auto;
             }
 
-            .cat3 {
+            .cat2 {
                 height: 100%;
                 width: auto;
             }
 
-            .cat4 {
+            .cat3 {
                 margin-left: 30px;
                 width: 80%;
             }
 
-            .cat5 {
+            .cat4 {
                 margin-left: 30px;
                 width: 77%;
             }
 
-            .cat6 {
+            .cat5 {
                 width: 71%;
 
             }
