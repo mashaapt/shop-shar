@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ProductsRoutingModule } from './products-routing.module';
 import { ProductsComponent } from './products.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NavigationModule } from 'src/app/modules/navigation/navigation.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   imports: [
     CommonModule,
     ProductsRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NavigationModule
   ]
 })
 export class ProductsModule { }

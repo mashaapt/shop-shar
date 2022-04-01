@@ -1,54 +1,24 @@
-<nav>
-    <div class="logo">
-  <img src="../assets/images/balloons-logo.svg" alt="balloons-logo">
-    <span>ShopShar</span>
-    </div>
-  
-    <div class="navigation">
-      <ul>
-        <a routerLink="/">Главная</a>
-        <a routerLink="/products">Продукция</a>
-        <a routerLink="/payment">Оплата</a>
-        <a routerLink="/delivery">Доставка</a>
-      </ul>
-    </div>
-  
-    <div class="numbers">
-      <p>+38 067 59 88 936</p>
-      <fa-icon [icon]="faChevronDown" size="lg"></fa-icon>
-    </div>
-  
-    <div class="icons">
-      <button class="mgglass">
-        <fa-icon [icon]="faMagnifyingGlass" size="lg"></fa-icon>
-      </button>
-      
-      <button class="cart">
-        <fa-icon [icon]="faCartShopping" size="lg"></fa-icon>
-      </button>
-      
-    </div>
-  </nav>
+<navigation></navigation>
 
-  <div class="banner">
-    <img src="./../../../assets/images/balloons-banner.jpg" alt="rose balloons">
-    <h3>ОПТОВАЯ И РОЗНИЧНАЯ 
-        <br>ПРОДАЖА ВОЗДУШНЫХ ШАРОВ <br>
-    </h3> 
-  </div>
+<div class="banner">
+  <img src="./../../../assets/images/balloons-banner.jpg" alt="rose balloons">
+  <h3>ОПТОВАЯ И РОЗНИЧНАЯ
+      <br>ПРОДАЖА ВОЗДУШНЫХ ШАРОВ <br>
+  </h3>
+</div>
 
-  <div class="categories">
-    <h3>КАТЕГОРИИ</h3>
+<div class="categories">
+  <h3>КАТЕГОРИИ</h3>
 
-    <ul>
-      <li  *ngFor="let category of categoryParents; index as i">
-        <a href="">
-          
-          <img class="cat{{i}}" src="./../../../assets/images/categories/{{category}}.svg" alt="balloons">
-          <h2>{{category}}</h2>
+  <ul>
+    <li  *ngFor="let category of categoryParents; index as i">
+      <a href="">
 
-        </a>
-      </li>
+        <img class="cat{{i}}" src="./../../../assets/images/categories/{{category}}.svg" alt="balloons">
+        <h2>{{category}}</h2>
 
-    </ul>
-  </div>
+      </a>
+    </li>
+
+  </ul>
+</div>
