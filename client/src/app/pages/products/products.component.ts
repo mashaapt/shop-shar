@@ -6,7 +6,10 @@ import { uniq, omit } from 'lodash';
 import { CategoryService } from 'src/app/services/category.service';
 import { Category } from '../../../../../common/interfaces/category.interface';
 
-
+export interface CatResult {
+  category: string;
+  children: string[];
+}
 
 @Component({
   selector: 'app-products',
@@ -38,21 +41,28 @@ export class ProductsComponent implements OnInit {
     this.categoryParents = uniq(this.categories.map(category => category.parent));
     this.categoryChildren = uniq(this.categories.map(category => category.child));
 
+    const results: CatResult[] = new Array();
+    
+    this.categories.forEach((cat) => {
 
+      const result = results.find(result => result.category === cat.parent);
 
-    const nestedCategories = [
-      {
-        category: 'Latex balloons',
-        children: [
-          'With drawing',
-          'Without drawing',
-          'For modelling',
-          'Shaped',
-          'Heart'
-        ]
-      },
+      if (!result) {
+        results.push({
+          category: cat.parent,
+          children: [
+            cat.child
+          ]
+        })
+      } else {
+        result.children.push(cat.child);
+      }
 
-    ]
+      
+    })
+
+    console.log(results);
+
   }
 }
 
