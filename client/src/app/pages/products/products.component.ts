@@ -18,16 +18,10 @@ export interface CatResult {
 })
 export class ProductsComponent implements OnInit {
 
-
-
-
-
-
-
   faChevronDown = faChevronDown;
   faMagnifyingGlass = faMagnifyingGlass;
   faCartShopping = faCartShopping;
-  nestedCats: CatResult[] = new Array();
+  nestedCats: CatResult[] = [];
   activeCatResult: CatResult;
 
   categories: Category[];
@@ -52,7 +46,9 @@ export class ProductsComponent implements OnInit {
 
     this.categories.forEach((cat) => {
 
-      const result = this.nestedCats.find(result => result.category === cat.parent);
+      const result = this.nestedCats.find(result => {
+        return result.category === cat.parent
+      });
 
       if (!result) {
         this.nestedCats.push({
@@ -65,14 +61,14 @@ export class ProductsComponent implements OnInit {
         result.children.push(cat.child);
       }
 
-      
+
     })
 
-    
-  }
-  
-  clickesdActiveCatResult() {
 
+  }
+
+  clickedActiveCatResult(cat: CatResult) {
+    this.activeCatResult = cat;
   }
 }
 

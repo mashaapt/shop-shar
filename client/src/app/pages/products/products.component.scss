@@ -1,0 +1,15 @@
+.choose-cat-btn,
+.choose-subcat-btn{
+      border-radius: 12px;
+      padding: 10px 17px;
+      border: none;
+      background-color: var(--main-bg-light);
+      margin: 18px 18px;
+
+}
+
+.choose-cat-btn.active,
+.choose-subcat-btn.active{
+  background-color: var(--main-bg-dark);
+  color: white;
+}
