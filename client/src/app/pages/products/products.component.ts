@@ -11,6 +11,11 @@ export interface CatResult {
   children: string[];
 }
 
+const result: CatResult = null;
+
+
+
+
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
@@ -23,6 +28,7 @@ export class ProductsComponent implements OnInit {
   faCartShopping = faCartShopping;
   nestedCats: CatResult[] = [];
   activeCatResult: CatResult;
+  activeSubcategory: string;
 
   categories: Category[];
   categoryParents: string[] = [];
@@ -69,6 +75,10 @@ export class ProductsComponent implements OnInit {
 
   clickedActiveCatResult(cat: CatResult) {
     this.activeCatResult = cat;
+  }
+
+  clickedActiveSubcatResult(subcat: string) {
+    this.activeSubcategory = subcat;
   }
 }
 

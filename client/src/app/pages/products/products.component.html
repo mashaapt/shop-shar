@@ -1,21 +1,26 @@
 <navigation></navigation>
 
-<button
-  class="choose-cat-btn"
-  [class.active]="activeCatResult === cat"
-  *ngFor="let cat of nestedCats"
-  (click)="clickedActiveCatResult(cat)">
+<div class="open-products">
 
-  {{cat.category}}
-</button>
-
-<div>
   <button
-    class="choose-subcat-btn"
-    [class.active]="subcat"
-    *ngFor="let subcat  of activeCatResult?.children">
+    class="choose-cat-btn"
+    [class.active]="activeCatResult === cat"
+    *ngFor="let cat of nestedCats"
+    (click)="clickedActiveCatResult(cat)">
 
-    {{subcat}}
+    {{cat.category}}
   </button>
+
+  <div>
+    <button
+      class="choose-subcat-btn"
+      [class.active]="activeSubcategory === subcat"
+      (click)="clickedActiveSubcatResult(subcat)"
+      *ngFor="let subcat  of activeCatResult?.children">
+
+      {{subcat}}
+    </button>
+  </div>
 </div>
+
  
