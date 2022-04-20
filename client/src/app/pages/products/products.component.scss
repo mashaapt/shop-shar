@@ -22,19 +22,28 @@
 }
 
 .open-products {
-  max-width: 1200px;
+  max-width: var(--body-width);
+}
+
+.products {
+  margin: 0 auto;
+  display: flex;
+  max-width: var(--body-width);
+}
+
+.sidebar {
+  height: 100%;
+  width: 200px;
 }
 
 ul {
   display: grid;
   flex-wrap: wrap;
   position: relative;
-  max-width: 1200px;
   justify-content: center;
   border-radius: 24px;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1em;
-  margin: 0 auto;
 
   img {
     height: 252px;
@@ -54,4 +63,8 @@ ul {
     padding-right: 0;
     align-items: end;
   }
+}
+
+.product-item {
+  display: flex;
 }

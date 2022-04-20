@@ -24,6 +24,9 @@
 </div>
 
 <div class="products">
+  <div class="sidebar">
+    
+  </div>
   <ul>
     <li *ngFor="let product of products">
       <img src="assets/images/placeholder.jpeg">
@@ -32,7 +35,7 @@
         <div>{{product.code}}</div>
         <div>{{product.price}}</div>
         <div>{{product.pieces}}</div>
-        <div>{{product.soldOut ? 'Распродано' : '-' }}</div>
+        <div>{{product.soldOut ? 'Нет в наличии' : 'Есть в наличии' }}</div>
       </div>
     </li>
   </ul>
