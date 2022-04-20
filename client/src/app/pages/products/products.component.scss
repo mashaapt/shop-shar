@@ -90,29 +90,43 @@ ul {
 }
 
 .p-code {
-  position: absolute;
-  left: 288px;
   font-size: 12px;
   font-weight: 200;
   color: grey;
+  margin-left: auto;
+}
+
+.input-cart {
+  width: 140px;
+  height: 37px;
+  position: relative;
 }
 
 .q-input {
-  width: 120px;
-  height: 32px;
+  height: 100%;
   border: 1.5px solid var(--main-bg-light);
   box-shadow: 0px 4px 10px rgba(193, 193, 237, 0.5);
   border-radius: 8px;
-  position: absolute;
+  padding-right: 45px;
+  padding-left: 10px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .icon-btn {
-  position: relative;
-  left: 111px;
 
-  .heart {
-    margin-left: 10px;
+  &.cart {
+    position: absolute;
+    right: 0;
   }
+  // &.heart {
+  //   margin-left: 10px;
+  // }
 }
 
+.input-btns-code {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
 

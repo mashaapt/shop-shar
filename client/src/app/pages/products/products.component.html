@@ -2,21 +2,15 @@
 
 <div class="open-products">
 
-  <button
-    class="choose-cat-btn"
-    [class.active]="activeCatResult === cat"
-    *ngFor="let cat of nestedCats"
+  <button class="choose-cat-btn" [class.active]="activeCatResult === cat" *ngFor="let cat of nestedCats"
     (click)="clickedActiveCatResult(cat)">
 
     {{cat.category}}
   </button>
 
   <div>
-    <button
-      class="choose-subcat-btn"
-      [class.active]="activeSubcategory === subcat"
-      (click)="clickedActiveSubcatResult(subcat)"
-      *ngFor="let subcat  of activeCatResult?.children">
+    <button class="choose-subcat-btn" [class.active]="activeSubcategory === subcat"
+      (click)="clickedActiveSubcatResult(subcat)" *ngFor="let subcat  of activeCatResult?.children">
 
       {{subcat}}
     </button>
@@ -25,30 +19,35 @@
 
 <div class="products">
   <div class="sidebar">
-    
+
   </div>
   <ul>
     <li *ngFor="let product of products">
       <img src="assets/images/placeholder.jpeg">
       <div class="product-item">
         <div class="p-title">{{product.title}}</div>
-         <div class="p-pcs">{{product.pieces}}</div>
-        
+        <div class="p-pcs">{{product.pieces}}</div>
+
         <div class="p-price-sold-out">
           <span class="p-price">{{product.price}}</span>
           <span class="p-sold-out">{{product.soldOut ? 'Нет в наличии' : 'Есть в наличии' }}</span>
         </div>
-        <div class="p-code">{{product.code}}</div>
       </div>
 
-      <input type="text" class="q-input" placeholder="Кол-во"/>
-      <button class="icon-btn cart">
-      <fa-icon [icon]="faCartShopping" size="lg"></fa-icon>
-      </button>
+      <div class="input-btns-code">
+        <div class="input-cart">
+          <input type="text" class="q-input" placeholder="Кол-во" />
+          <button class="icon-btn cart">
+            <fa-icon [icon]="faCartShopping" size="lg"></fa-icon>
+          </button>
+        </div>
 
-      <button class="icon-btn heart">
-        <fa-icon [icon]="faHeart" size="lg"></fa-icon>
-      </button>
+        <button class="icon-btn heart">
+          <fa-icon [icon]="faHeart" size="lg"></fa-icon>
+        </button>
+
+        <div class="p-code">Код: {{product.code}}</div>
+      </div>
     </li>
   </ul>
 </div>
