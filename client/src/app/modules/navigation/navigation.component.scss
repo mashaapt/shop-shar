@@ -46,10 +46,5 @@ nav .numbers {
 nav .icons {
   display: flex;
   gap: 10px;
-  button {
-      border-radius: 8px;
-      padding: 10px 12px;
-      border: none;
-      background-color: var(--main-bg-light);
-  }
+ 
 }

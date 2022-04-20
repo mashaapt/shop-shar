@@ -7,6 +7,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { Category } from '../../../../../common/interfaces/category.interface';
 import { Product } from '../../../../../common/interfaces/product.interface';
 import { ProductService } from 'src/app/services/product.service';
+import { faHeart } from '@fortawesome/pro-regular-svg-icons';
 
 export interface CatResult {
   category: string;
@@ -28,6 +29,8 @@ export class ProductsComponent implements OnInit {
   faChevronDown = faChevronDown;
   faMagnifyingGlass = faMagnifyingGlass;
   faCartShopping = faCartShopping;
+  faHeart = faHeart;
+
   nestedCats: CatResult[] = [];
   activeCatResult: CatResult;
   activeSubcategory: string;
