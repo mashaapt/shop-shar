@@ -23,4 +23,15 @@
   </div>
 </div>
 
+<div class="products">
+  <ul>
+    <li *ngFor="let product of products">
+      <div>{{product.title}}</div>
+      <div>{{product.code}}</div>
+      <div>{{product.price}}</div>
+      <div>{{product.pieces}}</div>
+      <div>{{product.soldOut ? 'Распродано' : '-' }}</div>
+    </li>
+  </ul>
+</div>
  

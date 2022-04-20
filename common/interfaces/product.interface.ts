@@ -74,13 +74,13 @@ export interface Product {
     _id?: string;
     title: string;
     description: string;
-    code: string;
+    code: number;
     category: Category;
-    price: number;
-    pieces: number;
-    sizeCm: number;
-    widthCm: number;
-    heightCm: number;
+    price: string;
+    pieces: string;
+    sizeCm: string;
+    widthCm: string;
+    heightCm: string;
     shape: Shape; // for foil balloons
     color: Color; // for both balloons
     maker: Maker; //

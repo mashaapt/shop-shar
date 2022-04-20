@@ -5,6 +5,8 @@ import { faCartShopping } from '@fortawesome/pro-regular-svg-icons';
 import { uniq, omit } from 'lodash';
 import { CategoryService } from 'src/app/services/category.service';
 import { Category } from '../../../../../common/interfaces/category.interface';
+import { Product } from '../../../../../common/interfaces/product.interface';
+import { ProductService } from 'src/app/services/product.service';
 
 export interface CatResult {
   category: string;
@@ -33,11 +35,14 @@ export class ProductsComponent implements OnInit {
   categories: Category[];
   categoryParents: string[] = [];
   categoryChildren: string[] = [];
-
+  products: Product[] = [];
+  
   constructor(
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private productService: ProductService
   ) {
     this.loadCategories();
+    this.loadProducts();
   }
 
   ngOnInit(): void {
@@ -69,8 +74,10 @@ export class ProductsComponent implements OnInit {
 
 
     })
+  }
 
-
+  async loadProducts() {
+    this.products = await this.productService.getAllProducts();
   }
 
   clickedActiveCatResult(cat: CatResult) {
@@ -79,6 +86,10 @@ export class ProductsComponent implements OnInit {
 
   clickedActiveSubcatResult(subcat: string) {
     this.activeSubcategory = subcat;
+  }
+
+  productsAppeared(product: Product[]) {
+    
   }
 }
 
