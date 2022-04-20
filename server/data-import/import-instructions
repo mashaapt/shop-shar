@@ -1,1 +1,1 @@
-mongo shop-shar < categoriesJson.js
+mongo shop-shar < databaseJson.js

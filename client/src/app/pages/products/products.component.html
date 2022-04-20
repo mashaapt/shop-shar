@@ -26,11 +26,14 @@
 <div class="products">
   <ul>
     <li *ngFor="let product of products">
-      <div>{{product.title}}</div>
-      <div>{{product.code}}</div>
-      <div>{{product.price}}</div>
-      <div>{{product.pieces}}</div>
-      <div>{{product.soldOut ? 'Распродано' : '-' }}</div>
+      <img src="assets/images/placeholder.jpeg">
+      <div class="product-item">
+        <div>{{product.title}}</div>
+        <div>{{product.code}}</div>
+        <div>{{product.price}}</div>
+        <div>{{product.pieces}}</div>
+        <div>{{product.soldOut ? 'Распродано' : '-' }}</div>
+      </div>
     </li>
   </ul>
 </div>
