@@ -15,7 +15,8 @@ const productSchema = new Schema<Product>({
   color: { type: String, required: false },
   maker: { type: String, required: false },
   type: { type: String, required: false },
-  soldOut: { type: Boolean, required: true }
+  soldOut: { type: Boolean, required: true },
+  imagePath: { type: String, required: false}
 });
 
 export const MongoProduct = model<Product>('Product', productSchema);

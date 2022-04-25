@@ -163,13 +163,20 @@
         <mat-checkbox formControlName="soldOut" class="form-control">
           Распродано
         </mat-checkbox>
+        <h1>Добавить фото</h1>
+        <div class="image" *ngFor="let image of images">
+          <button class="img" type="button">
+            <fa-icon [icon]="faPlus" size="lg"></fa-icon>
+          </button>
+        </div>
 
       </form>
       <button *ngIf="!editingProductId" mat-stroked-button color="primary" class="addprod-btn"
         [disabled]="newProductForm.invalid" (click)="clickedAddProduct()">
         Добавить
       </button>
-      <button *ngIf="editingProductId" mat-stroked-button color="primary" class="save-btn" (click)="clickedSaveProduct()">
+      <button *ngIf="editingProductId" mat-stroked-button color="primary" class="save-btn"
+        (click)="clickedSaveProduct()">
         Сохранить
       </button>
       <button *ngIf="editingProductId" mat-stroked-button color="primary" class="cancel-btn" (click)="clickedCancel()">

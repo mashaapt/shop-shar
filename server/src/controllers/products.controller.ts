@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { MongoProduct } from '../mongo-models/product';
-import { Body, Delete, Get, JsonController, Param, Post, Put, UseInterceptor } from 'routing-controllers';
+import { Body, Delete, Get, JsonController, Param, Post, Put, UseBefore, UseInterceptor } from 'routing-controllers';
 import { MongoInterceptor } from '../middleware/mongoose-middleware';
 import { Product } from '../../../common/interfaces/product.interface';
-
+import { storageMiddleware } from '../middleware/storage-middleware'
 
 @JsonController('/api/products')
 @UseInterceptor(MongoInterceptor)
@@ -22,6 +22,7 @@ export class ProductsController {
     }
 
     @Post()
+    @UseBefore(storageMiddleware)
     async addProduct(@Body() product: Product) {
 
         const productModel = new MongoProduct<Product>(product);

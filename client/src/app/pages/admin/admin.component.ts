@@ -8,7 +8,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 import { DeleteConfirmationComponent } from 'src/app/modules/delete-confirmation/delete-confirmation.component';
 import { map, startWith, Subject } from 'rxjs';
-
+import { faPlus } from '@fortawesome/pro-regular-svg-icons';
 
 @Component({
   selector: 'app-admin',
@@ -16,6 +16,9 @@ import { map, startWith, Subject } from 'rxjs';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
+
+  faPlus = faPlus;
+  
   newCategoryForm: FormGroup; //keeps the values from the inputs in the category form
   newProductForm: FormGroup;  //keeps the values from the inputs in the product form
   
@@ -205,7 +208,8 @@ export class AdminComponent implements OnInit {
       shape: ['', []],
       type: ['', []],
       maker: ['', []],
-      soldOut: [false, []]
+      soldOut: [false, []],
+      imagePath: ['', []]
     });
 
     //we take this newProducForm as an initial form that we can use later to get to the initial empty form of products
@@ -288,7 +292,8 @@ export class AdminComponent implements OnInit {
       shape: this.newProductForm.value.shape,
       type: this.newProductForm.value.type,
       maker: this.newProductForm.value.maker,
-      soldOut: this.newProductForm.value.soldOut
+      soldOut: this.newProductForm.value.soldOut,
+      // imagePath: this.newProductForm.value.imagePath
     };
 
     return product;
